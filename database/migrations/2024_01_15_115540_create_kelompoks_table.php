@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('desas', function (Blueprint $table) {
+        Schema::create('kelompoks', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->unsignedBigInteger('desa_id');
             $table->string('koordinator');
             $table->timestamps();
+
+            $table->foreign('desa_id')->references('id')->on('desas');
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('desas');
+        Schema::dropIfExists('kelompoks');
     }
 };

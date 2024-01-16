@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DesaController;
+use App\Http\Controllers\KelompokController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,5 +31,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('/desa', DesaController::class)->middleware(['auth', 'verified']);
+Route::resource('/kelompok', KelompokController::class)->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';

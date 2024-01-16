@@ -24,6 +24,14 @@
                                 {{ session('error') }}
                             </div>
                         @endif
+                        <input type="text" name="koordinator" placeholder="masukkan nama koordinator / ki"
+                            class="input input-bordered w-full bg-white mt-4" />
+                        <!-- error message untuk title -->
+                        @error('koordinator')
+                            <div class="text-red-600 my-1">
+                                {{ $message }}
+                            </div>
+                        @enderror
                         <div class="flex justify-start space-x-2">
                             <button type="submit" class="btn btn-primary my-4 text-white">Tambah</button>
                         </div>

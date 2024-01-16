@@ -35,7 +35,8 @@ class DesaController extends Controller
     {
         //validate form
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'koordinator' => 'required',
         ]);
 
         $existingRecord = Desa::where('name', $request->name)->first();
@@ -47,7 +48,8 @@ class DesaController extends Controller
             // Save or update the record
             //create post
             Desa::create([
-                'name'   => $request->name
+                'name'   => $request->name,
+                'koordinator'   => $request->koordinator,
             ]);
         }
 
@@ -81,7 +83,8 @@ class DesaController extends Controller
     {
         //validate form
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'koordinator' => 'required',
         ]);
 
         $desa = Desa::find($id);
@@ -99,12 +102,14 @@ class DesaController extends Controller
         //     );
         // }
 
-        $desa->update([
-            'name'   => $request->name
-        ]
-    );
+        $desa->update(
+            [
+                'name'   => $request->name,
+                'koordinator'   => $request->koordinator,
+            ]
+        );
 
-        return redirect()->route('desa.index')->with(['success' => 'Data Berhasil Dirubah!']);
+        return redirect()->route('desa.index')->with('success', ['Data Berhasil Dirubah!']);
     }
 
     /**
