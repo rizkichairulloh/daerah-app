@@ -5,23 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Kelompok extends Model
+class Daerah extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'desa_id',
-        'koordinator',
-    ];
+    protected $fillable = ['name', 'desa_id', 'kelompok_id', 'dapukan'];
 
     public function desa()
     {
         return $this->belongsTo(Desa::class);
     }
 
-    public function daerah()
+    public function kelompok()
     {
-        return $this->hasMany(Daerah::class);
+        return $this->belongsTo(Kelompok::class);
     }
 }

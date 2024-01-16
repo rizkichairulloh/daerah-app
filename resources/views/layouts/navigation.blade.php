@@ -15,6 +15,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('daerah.index')" :active="request()->routeIs('daerah.index')">
+                        {{ __('Daerah Klaten Utara') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('desa.index')" :active="request()->routeIs('desa.index')">
                         {{ __('Desa') }}
                     </x-nav-link>

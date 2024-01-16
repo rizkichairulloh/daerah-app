@@ -14,4 +14,9 @@ class Desa extends Model
     {
         return $this->hasMany(Kelompok::class);
     }
+
+    public function daerah()
+    {
+        return $this->hasMany(Daerah::class);
+    }
 }
