@@ -12,9 +12,14 @@ class DesaController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index()
+    public function index(Request $request)
     {
-        $desas = Desa::all();
+        if ($request->has('search')) {
+            $desas = Desa::where('name', 'LIKE', '%' . $request->search . '%')->get();
+        } else {
+            $desas = Desa::all();
+        }
+
         return view('desa.index', compact('desas'));
     }
 

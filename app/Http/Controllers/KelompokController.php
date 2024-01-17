@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Desa;
 use App\Models\Kelompok;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -12,11 +13,18 @@ class KelompokController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $kelompoks = Kelompok::orderBy("desa_id", "asc")->with('desa')->paginate(7);
+        if ($request->has('search')) {
+            $kelompoks = Kelompok::where('name', 'LIKE', '%' . $request->search . '%')->orderBy("desa_id", "asc")->with('desa')->paginate(7);
+        } else {
+            $kelompoks = Kelompok::orderBy("desa_id", "asc")->with('desa')->paginate(7);
+        }
 
-        return view('kelompok.index', compact('kelompoks'));
+        // Access the first item of the paginated results
+        $firstItem = $kelompoks->firstItem();
+
+        return view('kelompok.index', compact('kelompoks', 'firstItem'));
     }
 
     /**

@@ -3,6 +3,8 @@
 use App\Http\Controllers\DaerahController;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\KelompokController;
+use App\Http\Controllers\Pdf\ExportPdfDesaConttroller;
+use App\Http\Controllers\Pdf\ExportPdfKelompokConttroller;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,4 +37,8 @@ Route::resource('/desa', DesaController::class)->middleware(['auth', 'verified']
 Route::resource('/kelompok', KelompokController::class)->middleware(['auth', 'verified']);
 Route::resource('/daerah', DaerahController::class)->middleware(['auth', 'verified']);
 
+Route::get('/exportpdfkelompok', ExportPdfKelompokConttroller::class)->name('exportpdfkelompok')->middleware(['auth', 'verified']);
+Route::get('/exportpdfdesa', ExportPdfDesaConttroller::class)->name('exportpdfdesa')->middleware(['auth', 'verified']);
+
 require __DIR__ . '/auth.php';
+ 
