@@ -27,12 +27,12 @@
                                             <p class="text-gray-900 font-bold font-sans text-3xl">Import</p>
                                             <button class="text-gray-900 font-bold font-sans text-2xl">X</button>
                                         </div>
-                                       
-                                      </form>
+
+                                    </form>
                                     <form action="{{ route('import-excel-desa') }}" method="post"
                                         enctype="multipart/form-data">
                                         {{ csrf_field() }}
-                                        <input type="file" name="upload-file"
+                                        <input type="file" name="upload-file" required="required"
                                             class="file-input file-input-bordered file-input-primary w-full bg-white" />
 
                                         <div class="modal-action flex">

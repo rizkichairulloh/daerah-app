@@ -2,10 +2,10 @@
 
 namespace App\Imports;
 
-use App\Models\Desa;
+use App\Models\Daerah;
 use Maatwebsite\Excel\Concerns\ToModel;
 
-class DesaImport implements ToModel
+class DaerahImport implements ToModel
 {
     /**
     * @param array $row
@@ -14,11 +14,8 @@ class DesaImport implements ToModel
     */
     public function model(array $row)
     {
-        return new Desa([
-            'desa_id' => $row[1],
-            'kelompok_id' => $row[2],
-            'name' => $row[3],
-            'koordinator' => $row[4],
+        return new Daerah([
+            //
         ]);
     }
 }

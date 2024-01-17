@@ -15,6 +15,32 @@
                                 class="bg-white text-gray-900 input input-bordered input-info w-full" />
                         </form>
                         <div class="flex space-x-2">
+                              <!-- Open the modal using ID.showModal() method -->
+                              <button class="btn btn-warning text-white" onclick="my_modal_1.showModal()">Import
+                                Excel</button>
+                            <dialog id="my_modal_1" class="modal">
+                                <div class="modal-box bg-white">
+                                    <form method="dialog">
+                                        <!-- if there is a button in form, it will close the modal -->
+                                        <div class="flex justify-between items-center mb-8">
+                                            <p class="text-gray-900 font-bold font-sans text-3xl">Import</p>
+                                            <button class="text-gray-900 font-bold font-sans text-2xl">X</button>
+                                        </div>
+                                       
+                                      </form>
+                                    <form action="{{ route('import-excel-daerah') }}" method="post"
+                                        enctype="multipart/form-data">
+                                        {{ csrf_field() }}
+                                        <input type="file" name="upload-file" required="required"
+                                            class="file-input file-input-bordered file-input-primary w-full bg-white" />
+
+                                        <div class="modal-action flex">
+                                            <button type="submit" class="btn btn-primary">SUBMIT</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </dialog>
                             <a href="{{ route('export-excel-daerah') }}" class="btn btn-success text-white">Export Excel</a>
                             <a href="{{ route('exportpdfdaerah') }}" class="btn btn-info text-white">Export PDF</a>
                             <a href="{{ route('daerah.create') }}" class="btn btn-primary text-white">Tambah</a>
