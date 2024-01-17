@@ -13,11 +13,19 @@ class DaerahController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $daerahs = Daerah::with('desa', 'kelompok')->get();
+        // $daerahs = Daerah::with('desa', 'kelompok')->paginate(7);
 
-        return view('daerah.index', compact('daerahs'));
+        if ($request->has('search')) {
+            $daerahs = Daerah::where('name', 'LIKE', '%' . $request->search . '%')->with('desa', 'kelompok')->paginate(7);
+        } else {
+            $daerahs = Daerah::with('desa', 'kelompok')->paginate(7);
+        }
+
+        $firstItem = $daerahs->firstItem();
+
+        return view('daerah.index', compact('daerahs', 'firstItem'));
     }
 
     /**

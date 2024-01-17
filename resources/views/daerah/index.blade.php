@@ -9,8 +9,15 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <div class="flex justify-end">
-                        <a href="{{ route('daerah.create') }}" class="btn btn-primary text-white mb-4">Tambah</a>
+                    <div class="w-full flex justify-between items-center mb-6">
+                        <form action="{{ route('daerah.index') }}" method="GET">
+                            <input type="search" name="search" placeholder="Cari pengurus..."
+                                class="bg-white text-gray-900 input input-bordered input-info w-full" />
+                        </form>
+                        <div class="flex space-x-2">
+                            <a href="{{ route('exportpdfdaerah') }}" class="btn btn-info text-white">Export PDF</a>
+                            <a href="{{ route('daerah.create') }}" class="btn btn-primary text-white">Tambah</a>
+                        </div>
                     </div>
                     <table class="table">
                         <tr class="bg-primary">
@@ -22,9 +29,9 @@
                             <th class="text-white">Created</th>
                             <th class="text-white">Aksi</th>
                         </tr>
-                        @foreach ($daerahs as $data)
+                        @foreach ($daerahs as $index => $data)
                             <tr>
-                                <td class="text-gray-800">{{ $loop->iteration }}</td>
+                                <td class="text-gray-800">{{ $index + $firstItem }}</td>
                                 <td class="text-gray-800">{{ $data->name }}</td>
                                 <td class="text-gray-800">{{ $data->desa->name }}</td>
                                 <td class="text-gray-800">{{ $data->kelompok->name }}</td>
