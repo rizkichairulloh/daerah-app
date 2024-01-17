@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\DaerahController;
 use App\Http\Controllers\DesaController;
+use App\Http\Controllers\Excel\ExportExcelDaerahController;
+use App\Http\Controllers\Excel\ExportExcelKelompokController;
+use App\Http\Controllers\Excel\ImportExcelDesaController;
 use App\Http\Controllers\KelompokController;
 use App\Http\Controllers\Pdf\ExportPdfDaerahConttroller;
 use App\Http\Controllers\Pdf\ExportPdfDesaConttroller;
@@ -41,6 +44,8 @@ Route::resource('/daerah', DaerahController::class)->middleware(['auth', 'verifi
 Route::get('/exportpdfkelompok', ExportPdfKelompokConttroller::class)->name('exportpdfkelompok')->middleware(['auth', 'verified']);
 Route::get('/exportpdfdesa', ExportPdfDesaConttroller::class)->name('exportpdfdesa')->middleware(['auth', 'verified']);
 Route::get('/exportpdfdaerah', ExportPdfDaerahConttroller::class)->name('exportpdfdaerah')->middleware(['auth', 'verified']);
+Route::get('/export-excel-kelompok', ExportExcelKelompokController::class)->name('export-excel-kelompok')->middleware(['auth', 'verified']);
+Route::get('/export-excel-daerah', ExportExcelDaerahController::class)->name('export-excel-daerah')->middleware(['auth', 'verified']);
+Route::post('/import-excel-desa', ImportExcelDesaController::class)->name('import-excel-desa')->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';
- 

@@ -15,6 +15,33 @@
                                 class="bg-white text-gray-900 input input-bordered input-info w-full" />
                         </form>
                         <div class="flex space-x-2">
+                            {{-- <a href="{{ route('import-excel-desa') }}" class="btn btn-success text-white">Import PDF</a> --}}
+                            <!-- Open the modal using ID.showModal() method -->
+                            <button class="btn btn-warning text-white" onclick="my_modal_1.showModal()">Import
+                                Excel</button>
+                            <dialog id="my_modal_1" class="modal">
+                                <div class="modal-box bg-white">
+                                    <form method="dialog">
+                                        <!-- if there is a button in form, it will close the modal -->
+                                        <div class="flex justify-between items-center mb-8">
+                                            <p class="text-gray-900 font-bold font-sans text-3xl">Import</p>
+                                            <button class="text-gray-900 font-bold font-sans text-2xl">X</button>
+                                        </div>
+                                       
+                                      </form>
+                                    <form action="{{ route('import-excel-desa') }}" method="post"
+                                        enctype="multipart/form-data">
+                                        {{ csrf_field() }}
+                                        <input type="file" name="upload-file"
+                                            class="file-input file-input-bordered file-input-primary w-full bg-white" />
+
+                                        <div class="modal-action flex">
+                                            <button type="submit" class="btn btn-primary">SUBMIT</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </dialog>
                             <a href="{{ route('exportpdfdesa') }}" class="btn btn-info text-white">Export PDF</a>
                             <a href="{{ route('desa.create') }}" class="btn btn-primary text-white">Tambah</a>
                         </div>
@@ -40,7 +67,8 @@
                                             class="btn btn-sm btn-primary text-white">EDIT</a>
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-ghost text-red-800 hover:bg-red-800 hover:text-white">HAPUS</button>
+                                        <button type="submit"
+                                            class="btn btn-sm btn-ghost text-red-800 hover:bg-red-800 hover:text-white">HAPUS</button>
                                     </form>
                                 </td>
                             </tr>
