@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Daerah App') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -13,6 +13,12 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/1.13.7/css/dataTables.uikit.min.css" rel="stylesheet" />
+
+        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>  
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>  
+        <script src="https://cdn.datatables.net/1.13.7/js/dataTables.uikit.min.js"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">

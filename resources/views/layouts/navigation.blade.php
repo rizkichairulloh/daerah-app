@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('kelompok.index')" :active="request()->routeIs('kelompok.index')">
                         {{ __('Kelompok') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.index')">
+                        {{ __('Blog') }}
+                    </x-nav-link>
                 </div>
             </div>
 

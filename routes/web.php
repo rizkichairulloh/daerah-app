@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DaerahController;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\Excel\ExportExcelDaerahController;
@@ -41,6 +42,9 @@ Route::middleware('auth')->group(function () {
 Route::resource('/desa', DesaController::class)->middleware(['auth', 'verified']);
 Route::resource('/kelompok', KelompokController::class)->middleware(['auth', 'verified']);
 Route::resource('/daerah', DaerahController::class)->middleware(['auth', 'verified']);
+Route::resource('/blog', BlogController::class)->middleware(['auth', 'verified']);
+
+// Route::get('blogs', [BlogController::class, 'index'])->name('blogs.index');
 
 Route::get('/exportpdfkelompok', ExportPdfKelompokConttroller::class)->name('exportpdfkelompok')->middleware(['auth', 'verified']);
 Route::get('/exportpdfdesa', ExportPdfDesaConttroller::class)->name('exportpdfdesa')->middleware(['auth', 'verified']);
