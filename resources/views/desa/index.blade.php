@@ -61,14 +61,14 @@
                                 <td class="text-gray-800">{{ $data->koordinator }}</td>
                                 <td class="text-gray-800">{{ $data->created_at }}</td>
                                 <td>
-                                    <form onsubmit="return confirm('Apakah Anda Yakin ?');"
-                                        action="{{ route('desa.destroy', $data->id) }}" method="POST">
+                                    <form id="deleteForm" method="POST">
                                         <a href="{{ route('desa.edit', $data->id) }}"
                                             class="btn btn-sm btn-primary text-white">EDIT</a>
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
-                                            class="btn btn-sm btn-ghost text-red-800 hover:bg-red-800 hover:text-white">HAPUS</button>
+                                        <button type="button"
+                                            class="btn btn-sm btn-ghost text-red-800 hover:bg-red-800 hover:text-white"
+                                            onclick="confirmDelete('{{ $data->id }}')">HAPUS</button>
                                     </form>
                                 </td>
                             </tr>
@@ -78,4 +78,25 @@
             </div>
         </div>
     </div>
+    <script>
+        function confirmDelete(itemId) {
+            Swal.fire({
+                title: 'Apakah Anda Yakin?',
+                text: 'Data yang dihapus tidak dapat dikembalikan!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, update the form action with the correct item ID and submit the form
+                    document.getElementById('deleteForm').action = "{{ route('desa.destroy', '') }}" + '/' +
+                        itemId;
+                    document.getElementById('deleteForm').submit();
+                }
+            });
+        }
+    </script>
 </x-app-layout>

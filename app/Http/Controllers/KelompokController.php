@@ -63,7 +63,7 @@ class KelompokController extends Controller
             ]);
         }
 
-        return redirect()->route('kelompok.index')->with('Success', ['Data berhasil ditambahkan!']);
+        return redirect()->route('kelompok.index')->with('success','Item created successfully!');
     }
 
     /**
@@ -103,7 +103,7 @@ class KelompokController extends Controller
             'koordinator'   => $request->koordinator,
         ]);
 
-        return redirect()->route('kelompok.index')->with('Success', ['Data berhasil diupdate']);
+        return redirect()->route('kelompok.index')->with('success','Item updated successfully!');
     }
 
     /**
@@ -115,6 +115,6 @@ class KelompokController extends Controller
 
         $kelompok->delete();
 
-        return redirect()->route('kelompok.index')->with('Success', ['Data berhasil dihapus']);
+        return redirect()->route('kelompok.index')->with('success','Item deleted successfully!');
     }
 }

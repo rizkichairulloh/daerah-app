@@ -105,6 +105,7 @@
                 },
                 processing: true,
                 serverSide: true,
+                pageLength: 5,
                 ajax: "{{ route('blog.index') }}",
                 columns: [{
                         data: 'no',

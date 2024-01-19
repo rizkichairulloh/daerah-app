@@ -58,7 +58,7 @@ class DesaController extends Controller
             ]);
         }
 
-        return redirect()->route('desa.index')->with(['success' => 'Data Berhasil Disimpan!']);
+        return redirect()->route('desa.index')->with('success','Item created successfully!');
     }
 
     /**
@@ -114,7 +114,7 @@ class DesaController extends Controller
             ]
         );
 
-        return redirect()->route('desa.index')->with('success', ['Data Berhasil Dirubah!']);
+        return redirect()->route('desa.index')->with('success','Item updated successfully!');
     }
 
     /**
@@ -127,6 +127,6 @@ class DesaController extends Controller
 
         $desa->delete();
 
-        return redirect()->route('desa.index')->with('success', ['Data berhasil dihapus']);
+        return redirect()->route('desa.index')->with('success','Delete item successfully!');
     }
 }

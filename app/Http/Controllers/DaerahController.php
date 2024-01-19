@@ -59,7 +59,7 @@ class DaerahController extends Controller
             'dapukan'   => $request->dapukan,
         ]);
 
-        return redirect()->route('daerah.index')->with(['Success' => 'Data Berhasil Disimpan!']);
+        return redirect()->route('daerah.index')->with('success', 'Item created successfully!');
     }
 
     /**
@@ -89,8 +89,12 @@ class DaerahController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Daerah $daerah)
+    public function destroy($id): RedirectResponse
     {
-        //
+        $daerah = Daerah::find($id);
+
+        $daerah->delete();
+
+        return redirect()->route('daerah.index')->with('success', 'Item deleted successfully!');
     }
 }
