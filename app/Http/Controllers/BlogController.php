@@ -50,7 +50,7 @@ class BlogController extends Controller
             'content' => $request->content
         ]);
 
-        return redirect()->route('blog.index')->with('Success', ['Data berhasil ditambahkan']);
+        return redirect()->route('blog.index')->with('success','Item created successfully!');
     }
 
     /**
@@ -90,7 +90,7 @@ class BlogController extends Controller
             'content'   => $request->content,
         ]);
 
-        return redirect()->route('blog.index')->with('Success', ['Data berhasil diupdate']);
+        return redirect()->route('blog.index')->with('success','Item updated successfully!');
     }
 
     /**

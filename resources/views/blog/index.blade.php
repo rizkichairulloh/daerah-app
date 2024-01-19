@@ -42,29 +42,60 @@
 
         // Function to handle delete operation
         function deletePost(id) {
-            if (confirm('Are you sure you want to delete this BLOG?')) {
-                $.ajax({
-                    url: '/blog/' + id,
-                    method: 'DELETE', // Use the DELETE method for deleting resources
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                            'content') // Include CSRF token if you're using it
-                    },
-                    success: function(response) {
-                        if (response.success == 1) {
-                            alert("Blog deleted successfully.");
+            Swal.fire({
+                title: 'Anda yakin akan hapus data ini?',
+                text: 'anda tidak akan melihat data ini lagi!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Tidak',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/blog/' + id,
+                        method: 'DELETE', // Use the DELETE method for deleting resources
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content') // Include CSRF token if you're using it
+                        },
+                        success: function(response) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
 
-                            // Reload DataTable
-                            $('.data-table').DataTable().ajax.reload();
-                        } else {
-                            alert("Invalid ID.");
+                            if (response.success == 1) {
+                                Toast.fire({
+                                    icon: "success",
+                                    title: "Delete successfully!"
+                                });
+                                // Reload DataTable
+                                $('.data-table').DataTable().ajax.reload();
+                            } else {
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Delete Failed!"
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            Toast.fire({
+                                icon: "error",
+                                title: "Error deleting post. Please try again."
+                            });
                         }
-                    },
-                    error: function(xhr) {
-                        alert('Error deleting post. Please try again.');
-                    }
-                });
-            }
+                    });
+                }
+            });
         }
 
         $(function() {
@@ -105,11 +136,13 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, full, meta) {
-                            $updateButton = '<a href="{{ route('blog.edit', ':id')}}" class="btn btn-sm btn-primary text-white">EDIT</a>';
+                            $updateButton =
+                                '<a href="{{ route('blog.edit', ':id') }}" class="btn btn-sm btn-primary text-white">EDIT</a>';
 
                             $deleteButton = "<button onclick='deletePost(" + full.id +
                                 ")' class='btn btn-sm btn-error text-white deleteUser'>Hapus</i></button>";
-                            return "<div class='flex space-x-2'>" + $updateButton.replace(":id", full.id) + $deleteButton +
+                            return "<div class='flex space-x-2'>" + $updateButton.replace(":id",
+                                    full.id) + $deleteButton +
                                 "</div>";
                         },
                     },

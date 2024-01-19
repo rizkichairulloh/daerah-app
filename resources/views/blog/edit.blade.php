@@ -34,8 +34,9 @@
                                 {{ $message }}
                             </div>
                         @enderror
-                        <div class="flex justify-start space-x-2">
-                            <button type="submit" class="btn btn-primary my-4 text-white">Edit</button>
+                        <div class="flex justify-start space-x-2 my-4">
+                            <a href="{{ route('blog.index') }}" class="btn btn-outline">Batal</a>
+                            <button type="submit" class="btn btn-primary text-white">Edit</button>
                         </div>
                     </form>
                 </div>
