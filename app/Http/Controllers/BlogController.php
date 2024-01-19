@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -14,7 +15,7 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Blog::select('*');
+            $data = Blog::orderBy("id", "desc");
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->rawColumns(['action'])
@@ -29,15 +30,27 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        return view('blog.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+            'content' => 'required',
+        ]);
+
+        Blog::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'content' => $request->content
+        ]);
+
+        return redirect()->route('blog.index')->with('Success', ['Data berhasil ditambahkan']);
     }
 
     /**
@@ -51,56 +64,33 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request)
+    public function edit($id)
     {
-        ## Read POST data 
-        $id = $request->post('id');
+        $blog = Blog::find($id);
 
-        $empdata = Blog::find($id);
-
-        $response = array();
-        if (!empty($empdata)) {
-
-            $response['title'] = $empdata->title;
-            $response['description'] = $empdata->description;
-            $response['content'] = $empdata->content;
-            $response['success'] = 1;
-        } else {
-            $response['success'] = 0;
-        }
-
-        return response()->json($response);
+        return view('blog.edit', compact('blog'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Blog $blog)
+    public function update(Request $request, $id): RedirectResponse
     {
-        ## Read POST data
-        $id = $request->post('id');
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+            'content' => 'required',
+        ]);
 
-        $empdata = Blog::find($id);
+        $blog = Blog::find($id);
 
-        $response = array();
-        if (!empty($empdata)) {
-            $updata['title'] = $request->post('title');
-            $updata['description'] = $request->post('description');
-            $updata['content'] = $request->post('content');
+        $blog->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'content'   => $request->content,
+        ]);
 
-            if ($empdata->update($updata)) {
-                $response['success'] = 1;
-                $response['msg'] = 'Update successfully';
-            } else {
-                $response['success'] = 0;
-                $response['msg'] = 'Record not updated';
-            }
-        } else {
-            $response['success'] = 0;
-            $response['msg'] = 'Invalid ID.';
-        }
-
-        return response()->json($response);
+        return redirect()->route('blog.index')->with('Success', ['Data berhasil diupdate']);
     }
 
     /**

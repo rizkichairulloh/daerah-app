@@ -41,9 +41,9 @@
 
                                 </div>
                             </dialog>
-                            <a href="{{ route('export-excel-daerah') }}" class="btn btn-success text-white">Export Excel</a>
-                            <a href="{{ route('exportpdfdaerah') }}" class="btn btn-info text-white">Export PDF</a>
-                            <a href="{{ route('daerah.create') }}" class="btn btn-primary text-white">Tambah</a>
+                            <a href="{{ route('export-excel-daerah') }}" class="btn btn-sm btn-success text-white">Export Excel</a>
+                            <a href="{{ route('exportpdfdaerah') }}" class="btn btn-sm btn-info text-white">Export PDF</a>
+                            <a href="{{ route('daerah.create') }}" class="btn btn-sm btn-primary text-white">Tambah</a>
                         </div>
                     </div>
                     <table class="table">

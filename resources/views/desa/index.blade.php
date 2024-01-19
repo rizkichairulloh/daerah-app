@@ -17,7 +17,7 @@
                         <div class="flex space-x-2">
                             {{-- <a href="{{ route('import-excel-desa') }}" class="btn btn-success text-white">Import PDF</a> --}}
                             <!-- Open the modal using ID.showModal() method -->
-                            <button class="btn btn-warning text-white" onclick="my_modal_1.showModal()">Import
+                            <button class="btn btn-sm btn-warning text-white" onclick="my_modal_1.showModal()">Import
                                 Excel</button>
                             <dialog id="my_modal_1" class="modal">
                                 <div class="modal-box bg-white">
@@ -42,8 +42,8 @@
 
                                 </div>
                             </dialog>
-                            <a href="{{ route('exportpdfdesa') }}" class="btn btn-info text-white">Export PDF</a>
-                            <a href="{{ route('desa.create') }}" class="btn btn-primary text-white">Tambah</a>
+                            <a href="{{ route('exportpdfdesa') }}" class="btn btn-sm btn-info text-white">Export PDF</a>
+                            <a href="{{ route('desa.create') }}" class="btn btn-sm btn-primary text-white">Tambah</a>
                         </div>
                     </div>
                     <table class="table">

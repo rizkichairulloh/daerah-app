@@ -5,58 +5,22 @@
         </h2>
     </x-slot>
 
-    <!-- Modal -->
-    <div id="updateModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Update</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">Employee Name</label>
-                        <input type="text" class="form-control" id="emp_name" placeholder="Enter Employee name"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter email">
-                    </div>
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <select id='gender' class="form-control">
-                            <option value='Male'>Male</option>
-                            <option value='Female'>Female</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" class="form-control" id="city" placeholder="Enter city">
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" id="txt_empid" value="0">
-                    <button type="button" class="btn btn-success btn-sm" id="btn_save">Save</button>
-                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
+                    <div class="w-full flex justify-end mb-6">
+                        <div class="flex space-x-2">
+                            {{-- <a href="#" class="btn btn-sm btn-info text-white hover:text-gray-900">Export PDF</a> --}}
+                            <a href="{{ route('blog.create') }}"
+                                class="btn btn-sm btn-primary text-white hover:text-gray-900">Tambah</a>
+                        </div>
+                    </div>
                     <table class="uk-table uk-table-hover uk-table-striped data-table" style="width:100%">
                         <thead>
                             <tr>
-                                <th class="text-gray-900">No</th>
+                                <th>No</th>
+                                <th>Id</th>
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Content</th>
@@ -105,12 +69,23 @@
 
         $(function() {
             var table = $('.data-table').DataTable({
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Indonesian.json'
+                },
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('blog.index') }}",
                 columns: [{
+                        data: 'no',
+                        name: 'no',
+                        sortable: false,
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1
+                        }
+                    },
+                    {
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
                     },
                     {
                         data: 'title',
@@ -130,10 +105,12 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, full, meta) {
-                            $updateButton = "<button class='btn btn-sm btn-success text-white updateUser' data-id='" + full.id + "' data-bs-toggle='modal' data-bs-target='#updateModal' >Edit</button>";
+                            $updateButton = '<a href="{{ route('blog.edit', ':id')}}" class="btn btn-sm btn-primary text-white">EDIT</a>';
 
-                            $deleteButton = "<button onclick='deletePost(" + full.id + ")' class='btn btn-sm btn-error text-white deleteUser'>Hapus</i></button>";
-                            return "<div class='flex space-x-2'>" + $updateButton + $deleteButton + "</div>";
+                            $deleteButton = "<button onclick='deletePost(" + full.id +
+                                ")' class='btn btn-sm btn-error text-white deleteUser'>Hapus</i></button>";
+                            return "<div class='flex space-x-2'>" + $updateButton.replace(":id", full.id) + $deleteButton +
+                                "</div>";
                         },
                     },
                 ]

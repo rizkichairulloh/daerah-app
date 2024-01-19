@@ -15,9 +15,9 @@
                                 class="bg-white text-gray-900 input input-bordered input-info w-full" />
                         </form>
                         <div class="flex space-x-2">
-                            <a href="{{ route('export-excel-kelompok') }}" class="btn btn-success text-white">Export Excel</a>
-                            <a href="{{ route('exportpdfkelompok') }}" class="btn btn-info text-white">Export PDF</a>
-                            <a href="{{ route('kelompok.create') }}" class="btn btn-primary text-white">Tambah</a>
+                            <a href="{{ route('export-excel-kelompok') }}" class="btn btn-sm btn-success text-white">Export Excel</a>
+                            <a href="{{ route('exportpdfkelompok') }}" class="btn btn-sm btn-info text-white">Export PDF</a>
+                            <a href="{{ route('kelompok.create') }}" class="btn btn-sm btn-primary text-white">Tambah</a>
                         </div>
                     </div>
                     <table class="table">
