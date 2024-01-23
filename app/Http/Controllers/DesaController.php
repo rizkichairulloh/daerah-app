@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Desa;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class DesaController extends Controller
 {
@@ -14,13 +15,15 @@ class DesaController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->has('search')) {
-            $desas = Desa::where('name', 'LIKE', '%' . $request->search . '%')->get();
-        } else {
-            $desas = Desa::all();
+        if ($request->ajax()) {
+            $data = Desa::orderBy("name", "asc");
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
-        return view('desa.index', compact('desas'));
+        return view('desa.index');
     }
 
     /**
@@ -58,7 +61,7 @@ class DesaController extends Controller
             ]);
         }
 
-        return redirect()->route('desa.index')->with('success','Item created successfully!');
+        return redirect()->route('desa.index')->with('success', 'Item created successfully!');
     }
 
     /**
@@ -114,19 +117,25 @@ class DesaController extends Controller
             ]
         );
 
-        return redirect()->route('desa.index')->with('success','Item updated successfully!');
+        return redirect()->route('desa.index')->with('success', 'Item updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
 
-    public function destroy($id): RedirectResponse
+    public function destroy($id)
     {
         $desa = Desa::find($id);
 
-        $desa->delete();
+        if ($desa->delete()) {
+            $response['success'] = 1;
+            $response['msg'] = 'Delete successfully';
+        } else {
+            $response['success'] = 0;
+            $response['msg'] = 'Invalid ID.' + $id;
+        }
 
-        return redirect()->route('desa.index')->with('success','Delete item successfully!');
+        return response()->json($response);
     }
 }

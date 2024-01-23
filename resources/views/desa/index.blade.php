@@ -9,11 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <div class="w-full flex justify-between items-center mb-6">
-                        <form action="{{ route('desa.index') }}" method="GET">
-                            <input type="search" name="search" placeholder="Cari desa..."
-                                class="bg-white text-gray-900 input input-bordered input-info w-full" />
-                        </form>
+                    <div class="w-full flex justify-end items-center mb-6">
                         <div class="flex space-x-2">
                             {{-- <a href="{{ route('import-excel-desa') }}" class="btn btn-success text-white">Import PDF</a> --}}
                             <!-- Open the modal using ID.showModal() method -->
@@ -46,57 +42,127 @@
                             <a href="{{ route('desa.create') }}" class="btn btn-sm btn-primary text-white">Tambah</a>
                         </div>
                     </div>
-                    <table class="table">
-                        <tr class="bg-primary">
-                            <th class="text-white">No</th>
-                            <th class="text-white">Desa</th>
-                            <th class="text-white">Koordinator / KI</th>
-                            <th class="text-white">Created</th>
-                            <th class="text-white">Aksi</th>
-                        </tr>
-                        @foreach ($desas as $data)
+                    <table class="uk-table uk-table-hover uk-table-striped data-table" style="width:100%">
+                        <thead>
                             <tr>
-                                <td class="text-gray-800">{{ $loop->iteration }}</td>
-                                <td class="text-gray-800">{{ $data->name }}</td>
-                                <td class="text-gray-800">{{ $data->koordinator }}</td>
-                                <td class="text-gray-800">{{ $data->created_at }}</td>
-                                <td>
-                                    <form id="deleteForm" method="POST">
-                                        <a href="{{ route('desa.edit', $data->id) }}"
-                                            class="btn btn-sm btn-primary text-white">EDIT</a>
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button"
-                                            class="btn btn-sm btn-ghost text-red-800 hover:bg-red-800 hover:text-white"
-                                            onclick="confirmDelete('{{ $data->id }}')">HAPUS</button>
-                                    </form>
-                                </td>
+                                <th>No</th>
+                                <th>Desa</th>
+                                <th>Koordinator Desa</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
+                        </thead>
+                        <tbody>
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        function confirmDelete(itemId) {
+        // CSRF Token
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+        // Function to handle delete operation
+        function deletePost(id) {
             Swal.fire({
-                title: 'Apakah Anda Yakin?',
-                text: 'Data yang dihapus tidak dapat dikembalikan!',
+                title: 'Anda yakin akan hapus data ini?',
+                text: 'anda tidak akan melihat data ini lagi!',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal'
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Tidak',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // If confirmed, update the form action with the correct item ID and submit the form
-                    document.getElementById('deleteForm').action = "{{ route('desa.destroy', '') }}" + '/' +
-                        itemId;
-                    document.getElementById('deleteForm').submit();
+                    $.ajax({
+                        url: '/desa/' + id,
+                        method: 'DELETE', // Use the DELETE method for deleting resources
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content') // Include CSRF token if you're using it
+                        },
+                        success: function(response) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            if (response.success == 1) {
+                                Toast.fire({
+                                    icon: "success",
+                                    title: "Delete successfully!"
+                                });
+                                // Reload DataTable
+                                $('.data-table').DataTable().ajax.reload();
+                            } else {
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Delete Failed!"
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            Toast.fire({
+                                icon: "error",
+                                title: "Error deleting post. Please try again."
+                            });
+                        }
+                    });
                 }
             });
         }
+
+        $(function() {
+            var table = $('.data-table').DataTable({
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Indonesian.json'
+                },
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('desa.index') }}",
+                columns: [{
+                        data: 'no',
+                        name: 'no',
+                        sortable: false,
+                        searchable: false,
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1
+                        }
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'koordinator',
+                        name: 'koordinator'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, full, meta) {
+                            $updateButton =
+                                '<a href="{{ route('kelompok.edit', ':id') }}" class="btn btn-sm btn-primary text-white">EDIT</a>';
+
+                            $deleteButton = "<button onclick='deletePost(" + full.id +
+                                ")' class='btn btn-sm btn-error text-white deleteUser'>Hapus</i></button>";
+                            return "<div class='flex space-x-2'>" + $updateButton.replace(":id",
+                                    full.id) + $deleteButton +
+                                "</div>";
+                        },
+                    },
+                ]
+            });
+        });
     </script>
 </x-app-layout>

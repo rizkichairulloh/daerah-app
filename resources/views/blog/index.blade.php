@@ -20,7 +20,6 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Id</th>
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Content</th>
@@ -107,17 +106,15 @@
                 serverSide: true,
                 pageLength: 5,
                 ajax: "{{ route('blog.index') }}",
-                columns: [{
+                columns: [
+                {
                         data: 'no',
                         name: 'no',
                         sortable: false,
+                        searchable: false, 
                         render: function(data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1
                         }
-                    },
-                    {
-                        data: 'id',
-                        name: 'id',
                     },
                     {
                         data: 'title',

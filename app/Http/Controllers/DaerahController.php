@@ -7,6 +7,7 @@ use App\Models\Desa;
 use App\Models\Kelompok;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class DaerahController extends Controller
 {
@@ -15,17 +16,15 @@ class DaerahController extends Controller
      */
     public function index(Request $request)
     {
-        // $daerahs = Daerah::with('desa', 'kelompok')->paginate(7);
-
-        if ($request->has('search')) {
-            $daerahs = Daerah::where('name', 'LIKE', '%' . $request->search . '%')->with('desa', 'kelompok')->paginate(7);
-        } else {
-            $daerahs = Daerah::with('desa', 'kelompok')->paginate(7);
+        if ($request->ajax()) {
+            $data = Daerah::orderBy("desa_id", "asc")->with('desa', 'kelompok')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
-        $firstItem = $daerahs->firstItem();
-
-        return view('daerah.index', compact('daerahs', 'firstItem'));
+        return view('daerah.index');
     }
 
     /**
@@ -89,12 +88,18 @@ class DaerahController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id): RedirectResponse
+    public function destroy($id)
     {
         $daerah = Daerah::find($id);
 
-        $daerah->delete();
+        if ($daerah->delete()) {
+            $response['success'] = 1;
+            $response['msg'] = 'Delete successfully';
+        } else {
+            $response['success'] = 0;
+            $response['msg'] = 'Invalid ID.' + $id;
+        }
 
-        return redirect()->route('daerah.index')->with('success', 'Item deleted successfully!');
+        return response()->json($response);
     }
 }

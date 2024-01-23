@@ -7,6 +7,7 @@ use App\Models\Kelompok;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class KelompokController extends Controller
 {
@@ -15,16 +16,15 @@ class KelompokController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->has('search')) {
-            $kelompoks = Kelompok::where('name', 'LIKE', '%' . $request->search . '%')->orderBy("desa_id", "asc")->with('desa')->paginate(7);
-        } else {
-            $kelompoks = Kelompok::orderBy("desa_id", "asc")->with('desa')->paginate(7);
+        if ($request->ajax()) {
+            $data = Kelompok::orderBy("desa_id", "asc")->with('desa')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
-        // Access the first item of the paginated results
-        $firstItem = $kelompoks->firstItem();
-
-        return view('kelompok.index', compact('kelompoks', 'firstItem'));
+        return view('kelompok.index');
     }
 
     /**
@@ -63,7 +63,7 @@ class KelompokController extends Controller
             ]);
         }
 
-        return redirect()->route('kelompok.index')->with('success','Item created successfully!');
+        return redirect()->route('kelompok.index')->with('success', 'Item created successfully!');
     }
 
     /**
@@ -103,18 +103,24 @@ class KelompokController extends Controller
             'koordinator'   => $request->koordinator,
         ]);
 
-        return redirect()->route('kelompok.index')->with('success','Item updated successfully!');
+        return redirect()->route('kelompok.index')->with('success', 'Item updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id): RedirectResponse
+    public function destroy($id)
     {
         $kelompok = Kelompok::find($id);
 
-        $kelompok->delete();
+        if ($kelompok->delete()) {
+            $response['success'] = 1;
+            $response['msg'] = 'Delete successfully';
+        } else {
+            $response['success'] = 0;
+            $response['msg'] = 'Invalid ID.' + $id;
+        }
 
-        return redirect()->route('kelompok.index')->with('success','Item deleted successfully!');
+        return response()->json($response);
     }
 }
